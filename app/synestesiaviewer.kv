@@ -1,19 +1,87 @@
-<MyRoot>
+BoxLayoutApp: #this widget here will run
 
-    random_label: random_label
 
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: "SynestesiaViewer"
-            font_size: 64
-            color: 0.92, 0.45, 0
-        Label:
-            id: random_label
-            text: "-"
-            font_size: 64
+
+
+<BoxLayoutApp>:
+    orientation: "vertical"
+    spacing: "20dp"
+    Label:
+        text: "Artursson: Synestesia Viewer"
+        font_size: "50dp"
+        font_name: "fonts/quicksand/Quicksand-Regular.otf"
+        size_hint: 0.25, 1
+        pos_hint: { "center_x" : 0.5}
+    Label:
+        text: root.text_input_str
+        font_size: "150dp"
+        font_name: "fonts/quicksand/Quicksand-Bold.otf"
+        size_hint: 0.75, 1
+        pos_hint: { "center_x" : 0.5}
+        color: 0.5, 0.5, 0.75, 1
+    TextInput:
+        id: my_text_input
+        text: "Enter text here"
+        font_size: "30dp"
+        font_name: "fonts/quicksand/Quicksand-Italic.otf"
+        size_hint: 0.50, 0.50
+        pos_hint: { "center_x" : 0.5}
+        multiline: False
+        on_text_validate: root.on_text_validate(self)
+    #Button:
+    #    text: "Submit"
+    #    font_name: "fonts/quicksand/Quicksand-Regular.otf"
+    #    font_size: "30dp"
+    #    size_hint: None, None
+    #    size: "150dp", "50dp"
+    #    pos_hint: { "center_x" : 0.5}
+
+
+
+
+
+
+<BoxLayoutExample>:
+    orientation: "vertical"
+    BoxLayout
+        spacing: "10dp"
         Button:
-            text: "Generate"
-            font_size: 32
-            size: 100, 50
-            on_press: root.generate_number()
+            text: "A1"
+        Button:
+            text: "A2"
+        Button:
+            text: "A3"
+    Button:
+        text: "B"
+        size_hint: None, None #set size manually instead, specify size afterwards
+        size: "40dp", "40dp"
+        # OR
+        #width: "40dp"
+        #height: "40dp"
+    Button:
+        text: "C"
+        size_hint: 0.5, None
+        height: "50dp"
+        # x, center_x, right
+        # y, center_y, top
+        pos_hint: { "x": 0.75} # dictionary with above entries
+    Button:
+        text: "D"
+        size_hint: 0.5, None
+        height: "50dp"
+        pos_hint: { "center_x": 0.5}
+
+
+<MainWidget>
+# using no layout does not adjust object positions if screen size changes
+    Button:
+        text: "Hello"
+        #size: 400 , 100 #different devices have different pixel densities. Use dp instead
+        size: "100dp" , "80dp"
+        pos: "100dp" , "200dp"
+        color: 1, 0, 0, 1 # [0-1] red, green, blue, alpha (transparency)
+    Label:
+        text: "Hello2"
+        size: "100dp" , "80dp"
+        pos: "200dp" , "300dp"
+        color: 1, 0, 0, 1

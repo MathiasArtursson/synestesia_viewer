@@ -1,10 +1,12 @@
 import kivy
 from kivy.app import App
 from kivy.properties import StringProperty
+from kivy.properties import FloatProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
+import numpy as np
 import random
 
 kivy.require('1.9.0') #play around if it does not work on your phone
@@ -20,12 +22,44 @@ class BoxLayoutExample(BoxLayout): #class for layout
         self.add_widget(b2)
 """
 
+def loadColors():
+        color_dict = {}
+        color_dict["a"] = np.array([250, 80, 80])/255
+        color_dict["b"] = np.array([184, 92, 174])/255
+        color_dict["c"] = np.array([215, 245, 140])/255
+        return color_dict
+
+def mixColors(dominant_color, recessive_color, ratio):
+        return dominant_color - (dominant_color - recessive_color)/ratio
+
+def getWordColor(input_str, color_dict):
+    max_chars = 4
+    ratio = 2
+    current_color = color_dict[input_str[0].lower()]
+    for i in range(1,len(input_str)):
+        next_color = color_dict[input_str[i].lower()]
+        current_color = mixColors(current_color, next_color, ratio^(i-1))
+        if i == max_chars - 1:
+            break
+    return current_color
+
 class BoxLayoutApp(BoxLayout): #class for layout
     
-    text_input_str = StringProperty("Colored word here")
+    color_dict = loadColors()
+    start_str = "ab"
+    red_color_start, green_color_start, blue_color_start = getWordColor(start_str.lower(), color_dict)
+    
+    red_color_input = FloatProperty(red_color_start)
+    green_color_input = FloatProperty(green_color_start)
+    blue_color_input = FloatProperty(blue_color_start)
 
+    text_input_str = StringProperty(start_str)
+    
     def on_text_validate(self, widget):
-        self.text_input_str = widget.text
+            self.red_color_output, self.green_color_output, self.blue_color_output = getWordColor(widget.text.lower(), self.color_dict)
+            self.text_input_str = widget.text
+
+    
 
 
 class MainWidget(Widget): #class for widget
@@ -38,9 +72,7 @@ class SynestesiaViewer(App):
 synestesiaViewer = SynestesiaViewer()
 synestesiaViewer.run()
 
-def mixColors(dominant_color,recessive_color,ratio):
-    return dominant_color - (dominant_color - recessive_color)/ratio
-
+"""
 def loadColors():
     color_dict = {}
     color_dict["a"] = "fa5050"
@@ -73,3 +105,4 @@ def loadColors():
     color_dict["ä"] = "ff7878"
     color_dict["ö"] = "5e5e5e"
     return color_dict
+    """
